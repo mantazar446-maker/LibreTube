@@ -15,7 +15,6 @@ import com.github.libretube.api.TrendingCategory
 import com.github.libretube.api.obj.Playlists
 import com.github.libretube.api.obj.StreamItem
 import com.github.libretube.constants.PreferenceKeys
-import com.github.libretube.constants.PreferenceKeys.HOME_TAB_CONTENT
 import com.github.libretube.databinding.FragmentHomeBinding
 import com.github.libretube.db.obj.PlaylistBookmark
 import com.github.libretube.enums.PlaylistType
