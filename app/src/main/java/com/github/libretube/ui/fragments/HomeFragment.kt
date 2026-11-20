@@ -86,6 +86,16 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             isLoading.observe(viewLifecycleOwner, ::updateLoading)
         }
 
+        // NAZRA keeps the home screen focused on videos from subscribed channels.
+        binding.trendingRV.isGone = true
+        binding.trendingTV.isGone = true
+        binding.bookmarksRV.isGone = true
+        binding.bookmarksTV.isGone = true
+        binding.playlistsRV.isGone = true
+        binding.playlistsTV.isGone = true
+        binding.watchingRV.isGone = true
+        binding.watchingTV.isGone = true
+
         binding.featuredTV.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_subscriptionsFragment)
         }
@@ -179,8 +189,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun fetchHomeFeed() {
         binding.nothingHere.isGone = true
-        val defaultItems = arrayOf("featured")
-        val visibleItems = PreferenceHelper.getStringSet(HOME_TAB_CONTENT, defaultItems.toSet())
+        val visibleItems = setOf("featured")
 
         homeViewModel.loadHomeFeed(
             context = requireContext(),
@@ -210,7 +219,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         if (streamItems == null) return
 
         makeVisible(binding.featuredRV, binding.featuredTV)
-        val feedVideos = streamItems.take(20)
+        val feedVideos = streamItems.asSequence()
+            .filterNot { it.isShort }
+            .take(20)
+            .toList()
 
         feedAdapter.submitList(feedVideos)
     }
